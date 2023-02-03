@@ -1,11 +1,12 @@
 import { type VoidComponent } from "solid-js";
-import { A, unstable_island } from "solid-start";
+import { A, unstable_island, useSearchParams } from "solid-start";
 import { trpc } from "../utils/trpc";
 const Button = unstable_island(() => import("../components/button"));
 const ButtonLink = unstable_island(() => import("../components/ButtonLink"));
 
 const Home: VoidComponent = () => {
-	const hello = trpc.example.hello.useQuery(() => ({ name: "from tRPC" }));
+	const [params] = useSearchParams();
+	const hello = trpc.example.hello.useQuery(() => ({ name: params.q }));
 	return (
 		<main class='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#026d56] to-[#152a2c]'>
 			<div class='container flex flex-col items-center justify-center gap-12 px-4 py-16 '>
@@ -21,7 +22,7 @@ const Home: VoidComponent = () => {
 						<h3 class='text-2xl font-bold'>Solid Start →</h3>
 						<div class='text-lg'>Learn more about Solid Start and the basics.</div>
 					</A> */}
-					<Button />
+					<Button value={params.q} />
 					{/* <A
 						class='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20'
 						href='https://github.com/orjdev/create-jd-app'

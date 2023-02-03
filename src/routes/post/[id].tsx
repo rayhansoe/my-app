@@ -12,7 +12,7 @@ export default function Page() {
 	return (
 		<div>
 			<h1>Post: {location.pathname}</h1>
-			<Button />
+			<Button value='' />
 			<PostId />
 		</div>
 	);

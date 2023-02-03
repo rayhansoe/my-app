@@ -1,7 +1,8 @@
+import { createEffect } from "solid-js";
 import { createSignal } from "solid-js";
 import { useLocation, useNavigate } from "solid-start";
 
-export default function button(props: any) {
+export default function button(props: { value: string }) {
 	const [value, setValue] = createSignal(props.value || "");
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -9,9 +10,11 @@ export default function button(props: any) {
 	const update = (newValue: string) => {
 		if (newValue.length && newValue !== value()) {
 			setValue(newValue);
-			navigate(`${location.pathname}post?q=${newValue}`);
+			navigate(`${location.pathname}?q=${newValue}`);
 		}
 	};
+
+	createEffect(() => setValue(props.value));
 
 	return (
 		<input
