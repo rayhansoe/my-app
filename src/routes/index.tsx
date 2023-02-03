@@ -1,6 +1,6 @@
 import { type VoidComponent } from "solid-js";
 import { A, createRouteData, unstable_island, useSearchParams } from "solid-start";
-import server$, { json } from "solid-start/server";
+import server$, { createServerData$, json } from "solid-start/server";
 import { trpc } from "../utils/trpc";
 const Button = unstable_island(() => import("../components/button"));
 const ButtonLink = unstable_island(() => import("../components/ButtonLink"));
@@ -12,7 +12,7 @@ const Home: VoidComponent = () => {
 	const [params] = useSearchParams();
 
 	const hello = trpc.example.hello.useQuery(() => ({ name: params.q }));
-	const data = createRouteData(wew, {
+	const data = createServerData$(wew, {
 		key: () => params.q,
 	});
 	return (
