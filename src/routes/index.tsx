@@ -3,6 +3,7 @@ import { A, unstable_island, useSearchParams } from "solid-start";
 import { trpc } from "../utils/trpc";
 const Button = unstable_island(() => import("../components/button"));
 const ButtonLink = unstable_island(() => import("../components/ButtonLink"));
+const HaloDeck = unstable_island(() => import("../components/HaloDeck"));
 
 const Home: VoidComponent = () => {
 	const [params] = useSearchParams();
@@ -35,6 +36,7 @@ const Home: VoidComponent = () => {
 					</A> */}
 					<ButtonLink />
 				</div>
+				<HaloDeck />
 				<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
 			</div>
 		</main>
