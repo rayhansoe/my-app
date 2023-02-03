@@ -1,7 +1,6 @@
 import { createEffect } from "solid-js";
 import { createSignal } from "solid-js";
 import { useLocation, useNavigate, useSearchParams } from "solid-start";
-import { trpc } from "~/utils/trpc";
 
 export default function button(props: { value: string }) {
 	const [value, setValue] = createSignal(props.value || "");
