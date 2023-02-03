@@ -26,6 +26,8 @@ export default function button(props: { value: string }) {
 				class='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20'
 			/>
 
+			{params.q}
+
 			<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
 		</div>
 	);
