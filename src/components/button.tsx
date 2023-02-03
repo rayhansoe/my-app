@@ -8,7 +8,7 @@ export default function button(props: { value: string }) {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const [params] = useSearchParams();
-	const hello = trpc.example.hello.useQuery(() => ({ name: params.q }));
+	// const hello = trpc.example.hello.useQuery(() => ({ name: params.q }));
 
 	const update = (newValue: string) => {
 		if (newValue.length && newValue !== value()) {
@@ -28,7 +28,7 @@ export default function button(props: { value: string }) {
 
 			{params.q}
 
-			<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
+			{/* <p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p> */}
 		</div>
 	);
 }

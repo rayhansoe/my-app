@@ -1,13 +1,20 @@
 import { type VoidComponent } from "solid-js";
-import { A, unstable_island, useSearchParams } from "solid-start";
+import { A, createRouteData, unstable_island, useSearchParams } from "solid-start";
+import server$, { json } from "solid-start/server";
 import { trpc } from "../utils/trpc";
 const Button = unstable_island(() => import("../components/button"));
 const ButtonLink = unstable_island(() => import("../components/ButtonLink"));
 const HaloDeck = unstable_island(() => import("../components/HaloDeck"));
 
+const wew = server$((q) => json({ hello: q }));
+
 const Home: VoidComponent = () => {
 	const [params] = useSearchParams();
+
 	const hello = trpc.example.hello.useQuery(() => ({ name: params.q }));
+	const data = createRouteData(wew, {
+		key: () => params.q,
+	});
 	return (
 		<main class='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#026d56] to-[#152a2c]'>
 			<div class='container flex flex-col items-center justify-center gap-12 px-4 py-16 '>
@@ -15,6 +22,7 @@ const Home: VoidComponent = () => {
 					Create <span class='text-[hsl(88, 77%, 78%)]'>JD</span> App
 				</h1>
 				<div class='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8'>
+					{data() && <h1>{JSON.stringify(data())}</h1>}
 					{/* <A
             class="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="https://start.solidjs.com"
