@@ -1,6 +1,6 @@
 import { useParams } from "solid-start";
 
-export default function UserPage() {
+export default function PostPage() {
 	const params = useParams();
-	return <div>User {params.id}</div>;
+	return <div>Post {params.id}</div>;
 }
