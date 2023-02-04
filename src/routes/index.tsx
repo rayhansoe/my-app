@@ -1,11 +1,18 @@
 import { Show, type VoidComponent } from "solid-js";
-import { A, unstable_island, useRouteData } from "solid-start";
+import { A, unstable_island, useRouteData, json } from "solid-start";
+import { createServerData$ } from "solid-start/server";
 import { trpc } from "../utils/trpc";
 const Link = unstable_island(() => import("../components/Link"));
 
 export function routeData() {
-	const hello = trpc.example.hello.useQuery(() => ({ name: "from tRPC on Route Data" }));
-	return hello;
+	const data = createServerData$(async () => {
+		const response = json({
+			data: "hello from server data",
+		});
+
+		return response;
+	});
+	return data;
 }
 
 const Home: VoidComponent = () => {
@@ -39,11 +46,12 @@ const Home: VoidComponent = () => {
             </div>
           </A> */}
 				</div>
-				<Show when={hello.data}>
-					<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
-				</Show>
-				<Show when={data.data}>
-					<p class='text-2xl text-white'>{data.data ?? "Loading tRPC query on Route Data"}</p>
+				<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
+
+				<Show when={data()}>
+					<p class='text-2xl text-white'>
+						{JSON.stringify(data()) ?? "Loading tRPC query on Route Data"}
+					</p>
 				</Show>
 			</div>
 		</main>
