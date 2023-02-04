@@ -1,7 +1,6 @@
 import { Show, type VoidComponent } from "solid-js";
 import { A, unstable_island, useRouteData } from "solid-start";
 import { createServerData$ } from "solid-start/server";
-import { trpc } from "../utils/trpc";
 const ButtonLink = unstable_island(() => import("../components/ButtonLink"));
 
 export function routeData() {
@@ -15,7 +14,6 @@ export function routeData() {
 
 const Home: VoidComponent = () => {
 	const data = useRouteData<typeof routeData>();
-	const hello = trpc.example.hello.useQuery(() => ({ name: "from tRPC" }));
 	return (
 		<main class='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#026d56] to-[#152a2c]'>
 			<div class='container flex flex-col items-center justify-center gap-12 px-4 py-16 '>
@@ -44,7 +42,6 @@ const Home: VoidComponent = () => {
             </div>
           </A> */}
 				</div>
-				<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
 
 				<Show when={data()?.data}>
 					<p class='text-2xl text-white'>{data()?.data ?? "Loading tRPC query on Route Data"}</p>

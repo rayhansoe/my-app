@@ -1,10 +1,9 @@
 import { debounce } from "@solid-primitives/scheduled";
-import { createSignal, Show } from "solid-js";
+import { createSignal } from "solid-js";
 import { A, useLocation } from "solid-start";
-import { trpc } from "../utils/trpc";
 
 export default function Page(props: { name: string }) {
-	const hello = trpc.example.hello.useQuery(() => ({ name: props.name }));
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let aRef: HTMLAnchorElement | ((el: HTMLAnchorElement) => void) | any;
 
 	const [value, setValue] = createSignal<string>("");
@@ -21,6 +20,7 @@ export default function Page(props: { name: string }) {
 		}
 	};
 
+	// eslint-disable-next-line solid/reactivity
 	const debouncedUpdate = debounce(update, 500);
 
 	return (
@@ -41,10 +41,6 @@ export default function Page(props: { name: string }) {
 			<A ref={aRef} href={value()}>
 				{props.name}
 			</A>
-
-			<Show when={hello.data}>
-				<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query insid Link"}</p>
-			</Show>
 		</>
 	);
 }
