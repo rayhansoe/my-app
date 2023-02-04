@@ -46,10 +46,8 @@ const Home: VoidComponent = () => {
 				</div>
 				<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
 
-				<Show when={data()}>
-					<p class='text-2xl text-white'>
-						{JSON.stringify(data()) ?? "Loading tRPC query on Route Data"}
-					</p>
+				<Show when={data()?.data}>
+					<p class='text-2xl text-white'>{data()?.data ?? "Loading tRPC query on Route Data"}</p>
 				</Show>
 			</div>
 		</main>
