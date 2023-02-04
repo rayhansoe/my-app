@@ -25,21 +25,6 @@ export default function Page(props: { name: string }) {
 
 	return (
 		<>
-			{/* <button
-				onClick={() => {
-					aRef?.click();
-				}}
-				class='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20'
-				// ref={aRef}
-				// href='/post'
-				// target='_blank'
-			>
-				<h3 class='text-2xl font-bold'>Post</h3>
-				<div class='text-lg'>
-					Learn more about Create JD App, the libraries it uses, and how to deploy it
-				</div>
-			</button> */}
-
 			<input
 				type='text'
 				onInput={(e) => debouncedUpdate(e.currentTarget.value)}

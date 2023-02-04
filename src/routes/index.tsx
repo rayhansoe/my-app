@@ -2,7 +2,7 @@ import { Show, type VoidComponent } from "solid-js";
 import { A, unstable_island, useRouteData } from "solid-start";
 import { createServerData$ } from "solid-start/server";
 import { trpc } from "../utils/trpc";
-const Link = unstable_island(() => import("../components/Link"));
+const ButtonLink = unstable_island(() => import("../components/ButtonLink"));
 
 export function routeData() {
 	const data = createServerData$(async () => {
@@ -31,7 +31,7 @@ const Home: VoidComponent = () => {
 						<h3 class='text-2xl font-bold'>Solid Start →</h3>
 						<div class='text-lg'>Learn more about Solid Start and the basics.</div>
 					</A>
-					<Link name={"from rayhan"} />
+					<ButtonLink name={"from rayhan"} />
 					{/* <A
             class="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
             href="https://github.com/orjdev/create-jd-app"
