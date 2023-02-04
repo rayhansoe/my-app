@@ -1,20 +1,16 @@
 import { type VoidComponent } from "solid-js";
-import { A, createRouteData, unstable_island, useSearchParams } from "solid-start";
-import server$, { createServerData$, json } from "solid-start/server";
+import { A, unstable_island, useRouteData } from "solid-start";
 import { trpc } from "../utils/trpc";
-const Button = unstable_island(() => import("../components/button"));
-const ButtonLink = unstable_island(() => import("../components/ButtonLink"));
-const HaloDeck = unstable_island(() => import("../components/HaloDeck"));
+const Link = unstable_island(() => import("../components/Link"));
 
-const wew = server$((q) => json({ hello: q }));
+export function routeData() {
+	const hello = trpc.example.hello.useQuery(() => ({ name: "from tRPC on Route Data" }));
+	return hello;
+}
 
 const Home: VoidComponent = () => {
-	const [params] = useSearchParams();
-
-	const hello = trpc.example.hello.useQuery(() => ({ name: params.q }));
-	const data = createServerData$(wew, {
-		key: () => params.q,
-	});
+	const data = useRouteData<typeof routeData>();
+	const hello = trpc.example.hello.useQuery(() => ({ name: "from tRPC" }));
 	return (
 		<main class='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#026d56] to-[#152a2c]'>
 			<div class='container flex flex-col items-center justify-center gap-12 px-4 py-16 '>
@@ -22,30 +18,29 @@ const Home: VoidComponent = () => {
 					Create <span class='text-[hsl(88, 77%, 78%)]'>JD</span> App
 				</h1>
 				<div class='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8'>
-					{data() && <h1>{JSON.stringify(data())}</h1>}
-					{/* <A
-            class="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-            href="https://start.solidjs.com"
-            target="_blank"
-          >
-						<h3 class='text-2xl font-bold'>Solid Start →</h3>
-						<div class='text-lg'>Learn more about Solid Start and the basics.</div>
-					</A> */}
-					<Button value={params.q} />
-					{/* <A
+					<A
 						class='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20'
-						href='https://github.com/orjdev/create-jd-app'
+						href='https://start.solidjs.com'
 						target='_blank'
 					>
-						<h3 class='text-2xl font-bold'>JD End →</h3>
-						<div class='text-lg'>
-							Learn more about Create JD App, the libraries it uses, and how to deploy it
-						</div>
-					</A> */}
-					<ButtonLink />
+						<h3 class='text-2xl font-bold'>Solid Start →</h3>
+						<div class='text-lg'>Learn more about Solid Start and the basics.</div>
+					</A>
+					<Link name={"from rayhan"} />
+					{/* <A
+            class="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+            href="https://github.com/orjdev/create-jd-app"
+            target="_blank"
+          >
+            <h3 class="text-2xl font-bold">JD End →</h3>
+            <div class="text-lg">
+              Learn more about Create JD App, the libraries it uses, and how to
+              deploy it
+            </div>
+          </A> */}
 				</div>
-				<HaloDeck />
 				<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
+				<p class='text-2xl text-white'>{data.data ?? "Loading tRPC query on Route Data"}</p>
 			</div>
 		</main>
 	);
