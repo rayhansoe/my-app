@@ -1,4 +1,4 @@
-import { type VoidComponent } from "solid-js";
+import { Show, type VoidComponent } from "solid-js";
 import { A, unstable_island, useRouteData } from "solid-start";
 import { trpc } from "../utils/trpc";
 const Link = unstable_island(() => import("../components/Link"));
@@ -39,8 +39,12 @@ const Home: VoidComponent = () => {
             </div>
           </A> */}
 				</div>
-				<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
-				<p class='text-2xl text-white'>{data.data ?? "Loading tRPC query on Route Data"}</p>
+				<Show when={hello.data}>
+					<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query"}</p>
+				</Show>
+				<Show when={data.data}>
+					<p class='text-2xl text-white'>{data.data ?? "Loading tRPC query on Route Data"}</p>
+				</Show>
 			</div>
 		</main>
 	);

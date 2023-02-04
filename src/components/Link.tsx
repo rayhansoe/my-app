@@ -1,3 +1,4 @@
+import { Show } from "solid-js";
 import { A } from "solid-start";
 import { trpc } from "../utils/trpc";
 
@@ -25,7 +26,11 @@ export default function Page(props: { name: string }) {
 				{props.name}
 			</A>
 
+			<Show when={hello.data}>
 			<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query insid Link"}</p>
+
+			</Show>
+
 		</>
 	);
 }

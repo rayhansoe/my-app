@@ -1,4 +1,5 @@
 import { A } from "solid-start";
+import { Show } from "solid-js";
 import { trpc } from "../utils/trpc";
 export default function Page() {
 	const hello = trpc.example.hello.useQuery(() => ({ name: "from Yowww" }));
@@ -7,7 +8,9 @@ export default function Page() {
 			<A href='/'>back</A>
 			<div>Page</div>
 
-			<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query insid Link"}</p>
+			<Show when={hello.data}>
+				<p class='text-2xl '>{hello.data ?? "Loading tRPC query insid Link"}</p>
+			</Show>
 		</>
 	);
 }
