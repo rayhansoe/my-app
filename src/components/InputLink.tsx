@@ -8,6 +8,7 @@ export default function Page(props: { name: string }) {
 	let aRef: HTMLAnchorElement | ((el: HTMLAnchorElement) => void) | any;
 
 	const [value, setValue] = createSignal<string>("");
+	const [nextValue, setNextValue] = createSignal<string>("");
 	const location = useLocation();
 
 	const navigate = () => aRef.click();
@@ -18,17 +19,13 @@ export default function Page(props: { name: string }) {
 		if (newValue.length && newValue !== value()) {
 			setValue(`${location.pathname}/${newValue}`);
 			mutation.mutate({ name: value() });
+			mutation.data?.user.name && setNextValue(mutation.data?.user.name);
 			debouncedNavigate();
 		}
 	};
 
 	// eslint-disable-next-line solid/reactivity
 	const debouncedUpdate = debounce(update, 500);
-
-	createEffect(() => {
-		console.log(mutation.data?.user);
-	});
-
 	return (
 		<>
 			<input
@@ -44,13 +41,9 @@ export default function Page(props: { name: string }) {
 				value={value()}
 			/>
 
-			{mutation.data?.user.name ? (
-				<A ref={aRef} href={mutation.data?.user.name}>
-					{props.name}
-				</A>
-			) : (
-				""
-			)}
+			<A ref={aRef} href={nextValue()}>
+				{props.name}
+			</A>
 		</>
 	);
 }
