@@ -2,12 +2,22 @@ import { z } from "zod";
 import { procedure, router } from "../utils";
 
 export default router({
-  hello: procedure.input(z.object({ name: z.string() })).query(({ input }) => {
-    return `Hello ${input.name}`;
-  }),
-  random: procedure
-    .input(z.object({ num: z.number() }))
-    .mutation(({ input }) => {
-      return Math.floor(Math.random() * 100) / input.num;
-    }),
+	// Create procedure at path 'createPost'
+	// The syntax is identical to creating queries
+	createPost: procedure
+		// using zod schema to validate and infer input values
+		.input(
+			z.object({
+				name: z.string(),
+			})
+		)
+		.mutation(({ input }) => {
+			// Here some createPost stuff would happen
+			return {
+				user: {
+					name: input.name,
+					createdAt: new Date(),
+				},
+			};
+		}),
 });
