@@ -1,7 +1,15 @@
 import { debounce } from "@solid-primitives/scheduled";
 import { createEffect, createSignal } from "solid-js";
 import { A, useLocation } from "solid-start";
+import server$ from "solid-start/server";
 import { trpc } from "~/utils/trpc";
+
+const mutation$ = server$(async (params: { name: string }) => {
+	return {
+		name: params.name,
+		createdAt: new Date(),
+	};
+});
 
 export default function Page(props: { name: string }) {
 	const mutation = trpc.example.createPost.useMutation();
@@ -9,17 +17,20 @@ export default function Page(props: { name: string }) {
 	let aRef: HTMLAnchorElement | ((el: HTMLAnchorElement) => void) | any;
 
 	const [value, setValue] = createSignal<string>("");
+	const [nextValue, setNextValue] = createSignal<string>("");
 	const location = useLocation();
 
 	const navigate = () => aRef.click();
 
 	const debouncedNavigate = debounce(navigate, 50);
 
-	const update = (newValue: string) => {
+	const update = async (newValue: string) => {
 		if (newValue.length && newValue !== value()) {
 			setValue(`${location.pathname}/${newValue}`);
-			mutation.mutate({ name: value() });
-			debouncedNavigate();
+			// mutation.mutate({ name: value() });
+			const mutate = await mutation$({ name: value() });
+			mutate && setNextValue(mutate.name);
+			await debouncedNavigate();
 		}
 	};
 
@@ -45,13 +56,16 @@ export default function Page(props: { name: string }) {
 				value={value()}
 			/>
 
-			{mutation.data?.user.name ? (
+			{/* {mutation.data?.user.name ? (
 				<A ref={aRef} href={mutation.data?.user.name}>
 					{props.name}
 				</A>
 			) : (
 				""
-			)}
+			)} */}
+			<A ref={aRef} href={nextValue()}>
+				{props.name}
+			</A>
 		</>
 	);
 }
