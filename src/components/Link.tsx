@@ -7,7 +7,7 @@ export default function Page(props: { name: string }) {
 	const hello = trpc.example.hello.useQuery(() => ({ name: props.name }));
 	let aRef: HTMLAnchorElement | ((el: HTMLAnchorElement) => void) | any;
 
-	const [value, setValue] = createSignal("");
+	const [value, setValue] = createSignal<string>("");
 	const location = useLocation();
 
 	const navigate = () => aRef.click();
@@ -53,7 +53,7 @@ export default function Page(props: { name: string }) {
 				value={value()}
 			/>
 
-			<A ref={aRef} href='/post'>
+			<A ref={aRef} href={value()}>
 				{props.name}
 			</A>
 
