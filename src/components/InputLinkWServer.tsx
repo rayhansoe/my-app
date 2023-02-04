@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { debounce } from "@solid-primitives/scheduled";
 import { createEffect, createSignal } from "solid-js";
 import { A, useLocation } from "solid-start";
@@ -13,7 +14,6 @@ const mutation$ = server$(async (params: { name: string }) => {
 
 export default function Page(props: { name: string }) {
 	const mutation = trpc.example.createPost.useMutation();
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let aRef: HTMLAnchorElement | ((el: HTMLAnchorElement) => void) | any;
 
 	const [value, setValue] = createSignal<string>("");
@@ -30,7 +30,7 @@ export default function Page(props: { name: string }) {
 			// mutation.mutate({ name: value() });
 			const mutate = await mutation$({ name: value() });
 			mutate && setNextValue(mutate.name);
-			await debouncedNavigate();
+			debouncedNavigate();
 		}
 	};
 
@@ -38,7 +38,9 @@ export default function Page(props: { name: string }) {
 	const debouncedUpdate = debounce(update, 500);
 
 	createEffect(() => {
-		console.log(mutation.data?.user);
+		console.log(mutation.data?.user, "trpc");
+		console.log(value(), "value");
+		console.log(nextValue(), "nextvalue");
 	});
 
 	return (

@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { debounce } from "@solid-primitives/scheduled";
 import { createEffect, createSignal } from "solid-js";
+import { unwrap } from "solid-js/store";
 import { A, useLocation } from "solid-start";
 import { trpc } from "~/utils/trpc";
 export default function Page(props: { name: string }) {
-	const mutation = trpc.example.createPost.useMutation();
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let aRef: HTMLAnchorElement | ((el: HTMLAnchorElement) => void) | any;
 
 	const [value, setValue] = createSignal<string>("");
 	const [nextValue, setNextValue] = createSignal<string>("");
 	const location = useLocation();
+
+	const mutation = trpc.example.createPost.useMutation();
 
 	const navigate = () => aRef.click();
 
@@ -19,13 +21,25 @@ export default function Page(props: { name: string }) {
 		if (newValue.length && newValue !== value()) {
 			setValue(`${location.pathname}/${newValue}`);
 			mutation.mutate({ name: value() });
-			mutation.data?.user.name && setNextValue(mutation.data?.user.name);
-			debouncedNavigate();
 		}
 	};
 
 	// eslint-disable-next-line solid/reactivity
 	const debouncedUpdate = debounce(update, 500);
+
+	createEffect(() => {
+		if (mutation.data?.user.name) {
+			setNextValue(unwrap(mutation.data?.user.name));
+			debouncedNavigate();
+		}
+	});
+
+	createEffect(() => {
+		console.log(mutation.data?.user, "trpc");
+		console.log(value(), "value");
+		console.log(nextValue(), "nextvalue");
+	});
+
 	return (
 		<>
 			<input
@@ -40,6 +54,8 @@ export default function Page(props: { name: string }) {
 				}}
 				value={value()}
 			/>
+
+			<h1>Mutation Data: {JSON.stringify(mutation.data?.user.name)}</h1>
 
 			<A ref={aRef} href={nextValue()}>
 				{props.name}
