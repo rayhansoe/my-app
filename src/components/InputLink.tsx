@@ -16,7 +16,7 @@ export default function Page(props: { name: string }) {
 
 	const update = (newValue: string) => {
 		if (newValue.length && newValue !== value()) {
-			setValue(`${location.pathname}?q=${newValue}`);
+			setValue(`${location.pathname}/${newValue}`);
 			debouncedNavigate();
 		}
 	};

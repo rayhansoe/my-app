@@ -1,9 +1,9 @@
 import { A, unstable_island, useRouteData } from "solid-start";
 import { Show } from "solid-js";
-import { trpc } from "../utils/trpc";
+import { trpc } from "../../utils/trpc";
 import { createServerData$ } from "solid-start/server";
 
-const InputLink = unstable_island(() => import("../components/InputLink"));
+const InputLink = unstable_island(() => import("../../components/InputLink"));
 
 export function routeData() {
 	const data = createServerData$(async () => {
