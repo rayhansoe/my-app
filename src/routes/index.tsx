@@ -1,16 +1,14 @@
 import { Show, type VoidComponent } from "solid-js";
-import { A, unstable_island, useRouteData, json } from "solid-start";
+import { A, unstable_island, useRouteData } from "solid-start";
 import { createServerData$ } from "solid-start/server";
 import { trpc } from "../utils/trpc";
 const Link = unstable_island(() => import("../components/Link"));
 
 export function routeData() {
 	const data = createServerData$(async () => {
-		const response = json({
+		return {
 			data: "hello from server data",
-		});
-
-		return response;
+		};
 	});
 	return data;
 }
