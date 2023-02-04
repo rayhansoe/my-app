@@ -1,15 +1,19 @@
 import { Show } from "solid-js";
-import { A } from "solid-start";
+import { A, useNavigate } from "solid-start";
 import { trpc } from "../utils/trpc";
 
 export default function Page(props: { name: string }) {
 	const hello = trpc.example.hello.useQuery(() => ({ name: props.name }));
 	let aRef: HTMLAnchorElement | ((el: HTMLAnchorElement) => void) | any;
+	const navigate = useNavigate();
 	return (
 		<>
 			<button
 				// <A
-				onClick={() => aRef?.click()}
+				onClick={() => {
+					// aRef?.click()
+					navigate("/post");
+				}}
 				class='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20'
 				// ref={aRef}
 				// href='/post'
@@ -27,10 +31,8 @@ export default function Page(props: { name: string }) {
 			</A>
 
 			<Show when={hello.data}>
-			<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query insid Link"}</p>
-
+				<p class='text-2xl text-white'>{hello.data ?? "Loading tRPC query insid Link"}</p>
 			</Show>
-
 		</>
 	);
 }
