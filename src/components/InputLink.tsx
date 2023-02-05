@@ -11,11 +11,21 @@ export default function Page(props: { name: string }) {
 	const [nextValue, setNextValue] = createSignal<string>("");
 	const location = useLocation();
 
-	const mutation = trpc.example.createPost.useMutation();
-
 	const navigate = () => aRef.click();
 
 	const debouncedNavigate = debounce(navigate, 50);
+
+	const mutation = trpc.example.createPost.useMutation(() => ({
+		onSuccess: (data: {
+			user: {
+				name: string;
+				createdAt: Date;
+			};
+		}) => {
+			setNextValue(data.user.name);
+			debouncedNavigate();
+		},
+	}));
 
 	const update = (newValue: string) => {
 		if (newValue.length && newValue !== value()) {
@@ -27,12 +37,12 @@ export default function Page(props: { name: string }) {
 	// eslint-disable-next-line solid/reactivity
 	const debouncedUpdate = debounce(update, 500);
 
-	createEffect(() => {
-		if (mutation.data?.user.name) {
-			setNextValue(unwrap(mutation.data?.user.name));
-			debouncedNavigate();
-		}
-	});
+	// createEffect(() => {
+	// 	if (mutation.data?.user.name) {
+	// 		setNextValue(unwrap(mutation.data?.user.name));
+	// 		debouncedNavigate();
+	// 	}
+	// });
 
 	createEffect(() => {
 		console.log(mutation.data?.user, "trpc");
